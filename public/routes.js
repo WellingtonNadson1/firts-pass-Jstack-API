@@ -1,4 +1,4 @@
-import { lisUsers } from "./controllers/UserController.js";
+import { lisUsers } from "./controllers/UserController";
 export let routes = [
     {
         endpoint: '/users',

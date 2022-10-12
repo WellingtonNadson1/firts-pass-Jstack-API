@@ -1,4 +1,4 @@
-import { users } from "../mocks/users.js";
+import { users } from "../mocks/users";
 // CREATE
 // READ
 export function lisUsers(request, response) {

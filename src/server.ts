@@ -1,5 +1,4 @@
 import http from 'node:http'
-import { users } from './mocks/users';
 import { lisUsers } from './controllers/UserController';
 import { routes } from './routes';
 
