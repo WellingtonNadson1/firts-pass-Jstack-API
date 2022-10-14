@@ -1,0 +1,13 @@
+import { getUserById, listUsers } from "./controllers/UserController.js";
+export let routes = [
+    {
+        endpoint: '/users',
+        method: 'GET',
+        handler: listUsers,
+    },
+    {
+        endpoint: '/users/:id',
+        method: 'GET',
+        handler: getUserById,
+    }
+];
