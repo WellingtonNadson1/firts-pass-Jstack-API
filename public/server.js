@@ -5,6 +5,8 @@ const PORT = 3000;
 const hostname = 'localhost';
 const server = http.createServer((request, response) => {
     const parsedUrl = new URL(`http://${hostname}:${PORT}${request.url}`);
+    // Tratando o Placeholder ":id" da rota, 
+    // para identificar o id do user a ser buscado na base. (Receiving params in the route)
     let { pathname } = parsedUrl;
     const splitEndpoint = pathname.split('/').filter(Boolean);
     let id = null;
@@ -16,6 +18,10 @@ const server = http.createServer((request, response) => {
     if (router) {
         request.query = Object.fromEntries(parsedUrl.searchParams);
         request.params = { id };
+        response.send = (statusCode, body) => {
+            response.writeHead(statusCode, { 'Content-type': 'application/json' });
+            response.end(JSON.stringify(body));
+        };
         router.handler(request, response);
     }
     else {

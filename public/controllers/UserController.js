@@ -9,20 +9,15 @@ export function listUsers(request, response) {
         }
         return userAnterior.id > userPosterior.id ? 1 : -1;
     });
-    response.writeHead(200, { 'Content-type': 'application/json' });
-    response.end(JSON.stringify(sortedUsers));
+    response.send(200, sortedUsers);
 }
 export function getUserById(request, response) {
     const { id } = request.params;
     const user = users.find(user => user.id === Number(id));
     if (user) {
-        response.writeHead(200, { 'Content-type': 'application/json' });
-        response.end(JSON.stringify(user));
+        return response.send(200, user);
     }
-    else {
-        response.writeHead(404, { 'Content-type': 'application/json' });
-        response.end(JSON.stringify({ error: 'user not found' }));
-    }
+    response.send(200, { error: 'user not found' });
 }
 // UPDATE
 // DELETE

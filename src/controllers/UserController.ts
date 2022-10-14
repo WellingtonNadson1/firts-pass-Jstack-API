@@ -1,7 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import { users } from '../mocks/users'
 
-
 // CREAT
 
 // READ
@@ -11,13 +10,11 @@ export function listUsers(request: IncomingMessage, response: ServerResponse){
 
     const sortedUsers = users.sort((userAnterior, userPosterior) => {
         if(order === 'desc'){
-            return userAnterior.id < userPosterior.id ? 1 : -1
-        } 
+          return userAnterior.id < userPosterior.id ? 1 : -1
+        }
         return userAnterior.id > userPosterior.id ? 1 : -1
     })
-
-  response.writeHead(200, {'Content-type': 'application/json'})
-  response.end(JSON.stringify(sortedUsers))
+  response.send(200, sortedUsers)
 }
 
 export function getUserById(request: IncomingMessage, response: ServerResponse){
@@ -27,13 +24,9 @@ export function getUserById(request: IncomingMessage, response: ServerResponse){
   const user = users.find(user => user.id ===  Number(id))
 
   if (user){
-    response.writeHead(200, {'Content-type': 'application/json'})
-    response.end(JSON.stringify(user))
-  } else {
-    response.writeHead(404, {'Content-type': 'application/json'})
-    response.end(JSON.stringify({error: 'user not found'}))
+    return response.send(200, user)
   }
-
+  response.send(200, {error: 'user not found'})
 }
 
 // UPDATE
