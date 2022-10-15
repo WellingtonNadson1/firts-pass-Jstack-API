@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { URL } from 'node:url';
+import { bodyParser } from './helpers/bodyParser.js';
 import { routes } from './routes.js';
 const PORT = 3000;
 const hostname = 'localhost';
@@ -18,7 +19,14 @@ const server = http.createServer((request, response) => {
     if (router) {
         request.query = Object.fromEntries(parsedUrl.searchParams);
         request.params = { id };
-        router.handler(request, response);
+        if (['POST', 'PUT', 'PATCH'].includes(request.method)) {
+            bodyParser(request, response, () => {
+                router.handler(request, response);
+            });
+        }
+        else {
+            router.handler(request, response);
+        }
     }
     else {
         response.writeHead(404, { 'Content-type': 'text/html' });

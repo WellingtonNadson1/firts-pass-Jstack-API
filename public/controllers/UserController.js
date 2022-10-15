@@ -5,21 +5,15 @@ export function send(response, statusCode, body) {
 }
 // CREAT
 export function creatUser(request, response) {
-    let body = '';
-    request.on('data', (chunck) => {
-        body += chunck;
-    });
-    request.on('end', () => {
-        body = JSON.parse(body);
-        const lastUser = users[users.length - 1].id;
-        const newUser = {
-            id: lastUser + 1,
-            first_name: body.first_name,
-            last_name: body.last_name
-        };
-        users.push(newUser);
-        send(response, 200, newUser);
-    });
+    const { data } = request;
+    const lastUser = users[users.length - 1].id;
+    const newUser = {
+        id: lastUser + 1,
+        first_name: data.first_name,
+        last_name: data.last_name
+    };
+    users.push(newUser);
+    send(response, 200, newUser);
 }
 // READ
 export function listUsers(request, response) {
