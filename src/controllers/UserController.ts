@@ -1,7 +1,29 @@
-import { IncomingMessage, ServerResponse } from 'http'
-import { users } from '../mocks/users'
+import { IncomingMessage, Server, ServerResponse } from 'http'
+import { User, users } from '../mocks/users'
+
+export function send(response: ServerResponse, statusCode: number, body: any){
+  response.writeHead(statusCode, {'Content-type': 'application/json'})
+  response.end(JSON.stringify(body))
+}
 
 // CREAT
+export function creatUser(request: IncomingMessage, response: ServerResponse){
+  let body = ''
+  request.on('data', (chunck) => {
+    body += chunck
+  })
+  request.on('end', () => {
+    body = JSON.parse(body)
+    const lastUser = users[users.length -1].id
+    const newUser: User = {
+      id: lastUser + 1,
+      first_name: body.first_name,
+      last_name: body.last_name
+    }
+    users.push(newUser)
+    send(response, 200, newUser)
+  })
+}
 
 // READ
 export function listUsers(request: IncomingMessage, response: ServerResponse){
@@ -14,7 +36,7 @@ export function listUsers(request: IncomingMessage, response: ServerResponse){
         }
         return userAnterior.id > userPosterior.id ? 1 : -1
     })
-  response.send(200, sortedUsers)
+    send(response, 200, sortedUsers)
 }
 
 export function getUserById(request: IncomingMessage, response: ServerResponse){
@@ -24,9 +46,9 @@ export function getUserById(request: IncomingMessage, response: ServerResponse){
   const user = users.find(user => user.id ===  Number(id))
 
   if (user){
-    return response.send(200, user)
+    return send(response, 200, user)
   }
-  response.send(200, {error: 'user not found'})
+  send(response, 200, {error: 'user not found'})
 }
 
 // UPDATE

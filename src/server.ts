@@ -1,6 +1,5 @@
 import http from 'node:http'
 import { URL } from 'node:url'
-import { listUsers } from './controllers/UserController'
 import { routes } from './routes'
 
 const PORT = 3000
@@ -30,11 +29,6 @@ const server = http.createServer((request, response) => {
     request.query = Object.fromEntries(parsedUrl.searchParams);
     request.params = { id }
 
-    response.send = (statusCode: number, body) => {
-      response.writeHead(statusCode, {'Content-type': 'application/json'})
-      response.end(JSON.stringify(body))
-    }
-    
     router.handler(request, response)
   } else {
     response.writeHead(404, {'Content-type': 'text/html'})

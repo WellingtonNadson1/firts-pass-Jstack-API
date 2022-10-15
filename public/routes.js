@@ -1,4 +1,4 @@
-import { getUserById, listUsers } from "./controllers/UserController.js";
+import { creatUser, getUserById, listUsers } from "./controllers/UserController.js";
 export let routes = [
     {
         endpoint: '/users',
@@ -9,5 +9,10 @@ export let routes = [
         endpoint: '/users/:id',
         method: 'GET',
         handler: getUserById,
+    },
+    {
+        endpoint: '/users',
+        method: 'POST',
+        handler: creatUser,
     }
 ];
